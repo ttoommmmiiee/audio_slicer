@@ -15,7 +15,7 @@ def downmix_to_mono(audio_data):
         mono_data = audio_data
     return mono_data
 
-def slice_audio(data, samplerate, slice_duration=10):
+def slice_audio(data, samplerate, slice_duration):
     samples_per_slice = samplerate * slice_duration
     num_slices = len(data) // samples_per_slice
     slices = np.array_split(data[:num_slices * samples_per_slice], num_slices)
@@ -33,13 +33,13 @@ def get_random_file_path(dir_path):
     file_path = os.path.join(dir_path, random_file)
     return file_path
 
-def process_audio_files(input_dir, output_dir):
+def process_audio_files(input_dir, output_dir,slice_duration=10):
     for filename in os.listdir(input_dir):
         if filename.lower().endswith(('.wav', '.flac','.mp3','.ogg')):
             file_path = os.path.join(input_dir, filename)
             basename, _ = os.path.splitext(filename)
             data, samplerate = read_audio_file(file_path)
             mono_data = downmix_to_mono(data)
-            slices = slice_audio(mono_data, samplerate, 10)
+            slices = slice_audio(mono_data, samplerate, slice_duration)
             save_audio_slices(slices, samplerate, output_dir, basename)
     print("Number of slices = ", len([entry for entry in os.listdir(output_dir) if os.path.isfile(os.path.join(output_dir, entry))]))
