@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='audioslicer',
+    name='tommieaudioslicer',
     version='1.0.0',
     description='SimpleSlicer',
     author='Tommie Introna',
